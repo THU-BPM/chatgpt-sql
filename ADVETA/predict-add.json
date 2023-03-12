@@ -1,0 +1,702 @@
+[
+    {
+        "db_id": "pets_1",
+        "query": "select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'cat' intersect select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'dog'",
+        "question": "Find the first name of students who have both cat and dog pets .",
+        "result": "Fname \nFROM Student \nWHERE StuID IN (\n    SELECT StuID \n    FROM Has_Pet \n    WHERE PetID IN (\n        SELECT PetID \n        FROM Pets \n        WHERE PetType = 'cat'\n    )\n    AND StuID IN (\n        SELECT StuID \n        FROM Has_Pet \n        WHERE PetID IN (\n            SELECT PetID \n            FROM Pets \n            WHERE PetType = 'dog'\n        )\n    )\n);",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Student(StuID,LName,Fname,Age,Sex,Major,Advisor,city_code,description,enrollment_year,advisor_name,minimum_age,our_overall_rating,location)\n;# Has_Pet(StuID,PetID,year_at_school,dog_bed)\n;# Pets(PetID,PetType,pet_age,weight,animal,pet_owner,pet_birth_date,max_weight)\n.# \n ### Find the first name of students who have both cat and dog pets . \n SELECT"
+    },
+    {
+        "db_id": "network_1",
+        "query": "SELECT count(*) FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id WHERE T2.name  =  \"Kyle\"",
+        "question": "How many likes does Kyle have?",
+        "result": "COUNT(*) \nFROM Likes \nWHERE student_id = (SELECT ID FROM Highschooler WHERE name = 'Kyle');",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Highschooler(ID,name,grade,email,status,scores)\n;# Friend(student_id,friend_id,private_school,hometown)\n;# Likes(student_id,liked_id,citizenship)\n.# \n ### How many likes does Kyle have? \n SELECT"
+    },
+    {
+        "db_id": "dog_kennels",
+        "query": "SELECT T1.cost_of_treatment ,  T2.treatment_type_description FROM Treatments AS T1 JOIN treatment_types AS T2 ON T1.treatment_type_code  =  T2.treatment_type_code",
+        "question": "What are the cost and treatment type description of each treatment?",
+        "result": "Treatments.cost_of_treatment, Treatment_Types.treatment_type_description \n FROM Treatments \n INNER JOIN Treatment_Types ON Treatments.treatment_type_code = Treatment_Types.treatment_type_code;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Breeds(breed_code,breed_name,animal_type,genus)\n;# Charges(charge_id,charge_type,charge_amount,additional_serivice_fee,billing_account)\n;# Sizes(size_code,size_description)\n;# Treatment_Types(treatment_type_code,treatment_type_description,treatment_design,threapy_duration)\n;# Owners(owner_id,first_name,last_name,street,city,state,zip_code,email_address,home_phone,cell_number,title_description,site_name,first_season_profit,status_date,last_status)\n;# Dogs(dog_id,owner_id,abandoned_yn,breed_code,size_code,name,age,date_of_birth,gender,weight,date_arrived,date_adopted,date_departed,no_case_in_livestock,id_no,sex,top_10_dog_breed,seller,breed_specifications,color_code)\n;# Professionals(professional_id,role_code,first_name,street,city,state,zip_code,last_name,email_address,home_phone,cell_number,social_security_card,role_responsibility,official_mailbox,administration_of_substance_harmful_to_health,street_zipcode,authority,date_of_birth,manager_name,cell_server)\n;# Treatments(treatment_id,dog_id,professional_id,treatment_type_code,date_of_treatment,cost_of_treatment,description,seize_animal,type_of_damage_included,acute_illness_treatment,therapy_characteristics)\n.# \n ### What are the cost and treatment type description of each treatment? \n SELECT"
+    },
+    {
+        "db_id": "concert_singer",
+        "query": "SELECT DISTINCT country FROM singer WHERE age  >  20",
+        "question": "What are  the different countries with singers above age 20?",
+        "result": "Country \nFROM singer \nWHERE Age > 20;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# stadium(Stadium_ID,Location,Name,Capacity,Highest,Lowest,Average,stadium_capacity,description,judge_name,total_attendance,sum)\n;# singer(Singer_ID,Name,Country,Song_Name,Song_release_year,Age,Is_male,genre,era,recording,author,music_event)\n;# concert(concert_ID,concert_Name,Theme,Stadium_ID,Year,venue,ticket_price,venue_type,concert_location,duration)\n;# singer_in_concert(concert_ID,Singer_ID,venue,artwork_id)\n.# \n ### What are  the different countries with singers above age 20? \n SELECT"
+    },
+    {
+        "db_id": "wta_1",
+        "query": "SELECT avg(loser_age) ,  avg(winner_age) FROM matches",
+        "question": "Find the average age of losers and winners of all matches.",
+        "result": "AVG(winner_age) AS avg_winner_age, AVG(loser_age) AS avg_loser_age FROM matches",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# players(player_id,first_name,last_name,hand,birth_date,country_code,away_player_name,lifespan,coach_code,legal_name,away_score,home_player_name)\n;# matches(best_of,draw_size,loser_age,loser_entry,loser_hand,loser_ht,loser_id,loser_ioc,loser_name,loser_rank,loser_rank_points,loser_seed,match_num,minutes,round,score,surface,tourney_date,tourney_id,tourney_level,tourney_name,winner_age,winner_entry,winner_hand,winner_ht,winner_id,winner_ioc,winner_name,winner_rank,winner_rank_points,winner_seed,year,loser_total_total_goal,seconds,total_wins,ticket_selling_time,coach_name,winning_margin,loser_history_rank,winner_total_goal,winner_history_rank,loser_birth_date,winner_birth_date)\n;# rankings(ranking_date,ranking,player_id,ranking_points,tours,tournament,grand_slam,championship,competition_time,ending_scores)\n.# \n ### Find the average age of losers and winners of all matches. \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT sum(SurfaceArea) FROM country WHERE Region  =  \"Caribbean\"",
+        "question": "What is the total surface area of the countries in the Caribbean region?",
+        "result": "SUM(SurfaceArea) FROM country WHERE Region='Caribbean'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### What is the total surface area of the countries in the Caribbean region? \n SELECT"
+    },
+    {
+        "db_id": "network_1",
+        "query": "SELECT student_id ,  count(*) FROM Likes GROUP BY student_id",
+        "question": "How many likes correspond to each student id?",
+        "result": "student_id, COUNT(*) AS num_likes \nFROM Likes \nGROUP BY student_id;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Highschooler(ID,name,grade,email,status,scores)\n;# Friend(student_id,friend_id,private_school,hometown)\n;# Likes(student_id,liked_id,citizenship)\n.# \n ### How many likes correspond to each student id? \n SELECT"
+    },
+    {
+        "db_id": "car_1",
+        "query": "SELECT T1.model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Weight  <  (SELECT avg(Weight) FROM CARS_DATA)",
+        "question": "Find the model of the car whose weight is below the average weight.",
+        "result": "model_name \nFROM cars_data \nWHERE Weight < (SELECT AVG(Weight) FROM cars_data);",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# continents(ContId,Continent,status,region)\n;# countries(CountryId,CountryName,Continent,state_name,region_code,geographical_longitude)\n;# car_makers(Id,Maker,FullName,Country,equipment_type,last_name,street,sold_price)\n;# model_list(ModelId,Maker,Model,trader,model_year)\n;# car_names(MakeId,Model,Make,description,manufacturer,model_year)\n;# cars_data(Id,MPG,Cylinders,Edispl,Horsepower,Weight,Accelerate,Year,torque,average_paid,model_name,mileage,max_speed,change,buying_from_dealer_price,city_mpg)\n.# \n ### Find the model of the car whose weight is below the average weight. \n SELECT"
+    },
+    {
+        "db_id": "network_1",
+        "query": "SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id ORDER BY count(*) DESC LIMIT 1",
+        "question": "Return the name of the high school student with the most friends.",
+        "result": "Highschooler.name\nFROM Highschooler\nWHERE Highschooler.ID IN (\n    SELECT student_id \n    FROM Friend \n    GROUP BY student_id \n    ORDER BY COUNT(friend_id) DESC \n    LIMIT 1\n)",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Highschooler(ID,name,grade,email,status,scores)\n;# Friend(student_id,friend_id,private_school,hometown)\n;# Likes(student_id,liked_id,citizenship)\n.# \n ### Return the name of the high school student with the most friends. \n SELECT"
+    },
+    {
+        "db_id": "orchestra",
+        "query": "SELECT Record_Company ,  COUNT(*) FROM orchestra GROUP BY Record_Company",
+        "question": "How many orchestras does each record company manage?",
+        "result": "Record_Company, COUNT(DISTINCT Orchestra_ID) \n FROM orchestra \n GROUP BY Record_Company",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# conductor(Conductor_ID,Name,Age,Nationality,Year_of_Work,requirement_to_pas_routed_order_id,office_name,start_year,location,last_name)\n;# orchestra(Orchestra_ID,Orchestra,Conductor_ID,Record_Company,Year_of_Founded,Major_Record_Format,chorus,date_of_recording,company_CEO,opera_house,album_sales)\n;# performance(Performance_ID,Orchestra_ID,Type,Date,Official_ratings_(millions),Weekly_rank,Share,performance_location,record_company)\n;# show(Show_ID,Performance_ID,If_first_show,Result,Attendance,concert_type,first_air_date,ending_scence,audience_rating)\n.# \n ### How many orchestras does each record company manage? \n SELECT"
+    },
+    {
+        "db_id": "employee_hire_evaluation",
+        "query": "SELECT count(*) ,  city FROM employee GROUP BY city",
+        "question": "Count the number of employees for each city.",
+        "result": "City, COUNT(Employee_ID) \n FROM employee \n GROUP BY City;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# employee(Employee_ID,Name,Age,City,education_level,agency)\n;# shop(Shop_ID,Name,Location,District,Number_products,Manager_name,job_title,customer_address,continent,type_of_retail_industry)\n;# hiring(Shop_ID,Employee_ID,Start_from,Is_full_time,occupation,employee_skill,end_by,available_time)\n;# evaluation(Employee_ID,Year_awarded,Bonus,skill)\n.# \n ### Count the number of employees for each city. \n SELECT"
+    },
+    {
+        "db_id": "course_teach",
+        "query": "SELECT T2.Name ,  COUNT(*) FROM course_arrange AS T1 JOIN teacher AS T2 ON T1.Teacher_ID  =  T2.Teacher_ID GROUP BY T2.Name",
+        "question": "Show names of teachers and the number of courses they teach.",
+        "result": "teacher.Name, COUNT(course_arrange.Course_ID) AS number_of_courses \nFROM teacher \nINNER JOIN course_arrange ON teacher.Teacher_ID = course_arrange.Teacher_ID \nGROUP BY teacher.Name",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# course(Course_ID,Staring_Date,Course,location,program)\n;# teacher(Teacher_ID,Name,Age,Hometown,school_year,email,join_year,school_location)\n;# course_arrange(Course_ID,Teacher_ID,Grade,education,school)\n.# \n ### Show names of teachers and the number of courses they teach. \n SELECT"
+    },
+    {
+        "db_id": "concert_singer",
+        "query": "SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1",
+        "question": "Which year has most number of concerts?",
+        "result": "Year, COUNT(*) as num_concerts \n FROM concert \n GROUP BY Year \n ORDER BY num_concerts DESC \n LIMIT 1;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# stadium(Stadium_ID,Location,Name,Capacity,Highest,Lowest,Average,stadium_capacity,description,judge_name,total_attendance,sum)\n;# singer(Singer_ID,Name,Country,Song_Name,Song_release_year,Age,Is_male,genre,era,recording,author,music_event)\n;# concert(concert_ID,concert_Name,Theme,Stadium_ID,Year,venue,ticket_price,venue_type,concert_location,duration)\n;# singer_in_concert(concert_ID,Singer_ID,venue,artwork_id)\n.# \n ### Which year has most number of concerts? \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT first_name FROM Students WHERE current_address_id != permanent_address_id",
+        "question": "What is the first name of the student whose permanent address is different from his or her current one?",
+        "result": "Students.first_name \nFROM Students \nWHERE Students.current_address_id <> Students.permanent_address_id;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### What is the first name of the student whose permanent address is different from his or her current one? \n SELECT"
+    },
+    {
+        "db_id": "employee_hire_evaluation",
+        "query": "SELECT manager_name ,  district FROM shop ORDER BY number_products DESC LIMIT 1",
+        "question": "Find the manager name and district of the shop whose number of products is the largest.",
+        "result": "shop.Manager_name, shop.District \nFROM shop \nWHERE shop.Number_products = (\n   SELECT MAX(Number_products) FROM shop\n);",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# employee(Employee_ID,Name,Age,City,education_level,agency)\n;# shop(Shop_ID,Name,Location,District,Number_products,Manager_name,job_title,customer_address,continent,type_of_retail_industry)\n;# hiring(Shop_ID,Employee_ID,Start_from,Is_full_time,occupation,employee_skill,end_by,available_time)\n;# evaluation(Employee_ID,Year_awarded,Bonus,skill)\n.# \n ### Find the manager name and district of the shop whose number of products is the largest. \n SELECT"
+    },
+    {
+        "db_id": "singer",
+        "query": "SELECT T2.Title ,  T1.Name FROM singer AS T1 JOIN song AS T2 ON T1.Singer_ID  =  T2.Singer_ID",
+        "question": "What are the song titles and singer names?",
+        "result": "song.Title, singer.Name\nFROM song\nINNER JOIN singer ON song.Singer_ID = singer.Singer_ID",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# singer(Singer_ID,Name,Birth_Year,Net_Worth_Millions,Citizenship,record_year,home_address,representative_work,album_title,best_sale_amount)\n;# song(Song_ID,Title,Singer_ID,Sales,Highest_Position,u_black_album,profits)\n.# \n ### What are the song titles and singer names? \n SELECT"
+    },
+    {
+        "db_id": "wta_1",
+        "query": "SELECT count(*) ,  hand FROM players GROUP BY hand",
+        "question": "Find the number of players for each hand type.",
+        "result": "hand, COUNT(player_id) AS player_count FROM players GROUP BY hand;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# players(player_id,first_name,last_name,hand,birth_date,country_code,away_player_name,lifespan,coach_code,legal_name,away_score,home_player_name)\n;# matches(best_of,draw_size,loser_age,loser_entry,loser_hand,loser_ht,loser_id,loser_ioc,loser_name,loser_rank,loser_rank_points,loser_seed,match_num,minutes,round,score,surface,tourney_date,tourney_id,tourney_level,tourney_name,winner_age,winner_entry,winner_hand,winner_ht,winner_id,winner_ioc,winner_name,winner_rank,winner_rank_points,winner_seed,year,loser_total_total_goal,seconds,total_wins,ticket_selling_time,coach_name,winning_margin,loser_history_rank,winner_total_goal,winner_history_rank,loser_birth_date,winner_birth_date)\n;# rankings(ranking_date,ranking,player_id,ranking_points,tours,tournament,grand_slam,championship,competition_time,ending_scores)\n.# \n ### Find the number of players for each hand type. \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT count(*) FROM country WHERE GovernmentForm  =  \"Republic\"",
+        "question": "How many countries have a republic as their form of government?",
+        "result": "COUNT(*) FROM country WHERE GovernmentForm = 'Republic';",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### How many countries have a republic as their form of government? \n SELECT"
+    },
+    {
+        "db_id": "flight_2",
+        "query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRPORTS AS T3 ON T1.SourceAirport  =  T3.AirportCode WHERE T2.City  =  \"Ashley\" AND T3.City  =  \"Aberdeen\"",
+        "question": "How many flights depart from City 'Aberdeen' and have destination City 'Ashley'?",
+        "result": "COUNT(*) FROM flights \nWHERE SourceAirport IN (SELECT AirportCode FROM airports WHERE City = 'Aberdeen') \nAND DestAirport IN (SELECT AirportCode FROM airports WHERE City = 'Ashley');",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# airlines(uid,Airline,Abbreviation,Country,southwest_airline,is_southwest_airline,full_name,carrier_group)\n;# airports(City,AirportCode,AirportName,Country,CountryAbbrev,terminal,terminal_name,city_sclae,country_population)\n;# flights(Airline,FlightNo,SourceAirport,DestAirport,flight_no,departure_time,source_port,date_of_flight)\n.# \n ### How many flights depart from City 'Aberdeen' and have destination City 'Ashley'? \n SELECT"
+    },
+    {
+        "db_id": "car_1",
+        "query": "SELECT T2.Make ,  T1.Year FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Year  =  (SELECT min(YEAR) FROM CARS_DATA);",
+        "question": "What is the maker of the carr produced in the earliest year and what year was it?",
+        "result": "car_makers.Maker, cars_data.Year \n FROM \n car_makers \n JOIN \n model_list ON car_makers.Id = model_list.Id \n JOIN \n car_names ON model_list.ModelId = car_names.ModelId \n JOIN \n cars_data ON car_names.MakeId = cars_data.Id \n ORDER BY \n cars_data.Year ASC \n LIMIT 1;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# continents(ContId,Continent,status,region)\n;# countries(CountryId,CountryName,Continent,state_name,region_code,geographical_longitude)\n;# car_makers(Id,Maker,FullName,Country,equipment_type,last_name,street,sold_price)\n;# model_list(ModelId,Maker,Model,trader,model_year)\n;# car_names(MakeId,Model,Make,description,manufacturer,model_year)\n;# cars_data(Id,MPG,Cylinders,Edispl,Horsepower,Weight,Accelerate,Year,torque,average_paid,model_name,mileage,max_speed,change,buying_from_dealer_price,city_mpg)\n.# \n ### What is the maker of the carr produced in the earliest year and what year was it? \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode GROUP BY T1.Name ORDER BY COUNT(*) DESC LIMIT 1",
+        "question": "Give the name of the nation that uses the greatest amount of languages.",
+        "result": "country.Name \nFROM countrylanguage \nJOIN country ON countrylanguage.CountryCode = country.Code \nGROUP BY countrylanguage.CountryCode \nORDER BY COUNT(*) DESC \nLIMIT 1;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### Give the name of the nation that uses the greatest amount of languages. \n SELECT"
+    },
+    {
+        "db_id": "poker_player",
+        "query": "SELECT count(*) FROM poker_player",
+        "question": "Count the number of poker players.",
+        "result": "COUNT(Poker_Player_ID) FROM poker_player",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# poker_player(Poker_Player_ID,People_ID,Final_Table_Made,Best_Finish,Money_Rank,Earnings,value,max_score,final_table_missed)\n;# people(People_ID,Nationality,Name,Birth_Date,Height,position)\n.# \n ### Count the number of poker players. \n SELECT"
+    },
+    {
+        "db_id": "tvshow",
+        "query": "SELECT country FROM TV_Channel EXCEPT SELECT T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.written_by  =  'Todd Casey'",
+        "question": "which countries' tv channels are not playing any cartoon written by Todd Casey?",
+        "result": "TV_Channel.Country \nFROM TV_Channel \nWHERE TV_Channel.id NOT IN (\n    SELECT Cartoon.Channel \n    FROM Cartoon \n    WHERE Cartoon.Written_by = 'Todd Casey'\n)",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# TV_Channel(id,series_name,Country,Language,Content,Pixel_aspect_ratio_PAR,Hight_definition_TV,Pay_per_view_PPV,Package_Option,channel_name,channel_type,digital,minimum_package,provider,broadcast_format,quality,television_service)\n;# TV_series(id,Episode,Air_Date,Rating,Share,18_49_Rating_Share,Viewers_m,Weekly_Rank,Channel,weekly_time_slot,release_region)\n;# Cartoon(id,Title,Directed_by,Written_by,Original_air_date,Production_code,Channel,original_voice,actor,network,result,number_of_page,format)\n.# \n ### which countries' tv channels are not playing any cartoon written by Todd Casey? \n SELECT"
+    },
+    {
+        "db_id": "dog_kennels",
+        "query": "SELECT T1.professional_id ,  T1.role_code ,  T1.first_name FROM Professionals AS T1 JOIN Treatments AS T2 ON T1.professional_id  =  T2.professional_id GROUP BY T1.professional_id HAVING count(*)  >=  2",
+        "question": "Which professionals have done at least two treatments? List the professional's id, role, and first name.",
+        "result": "professional_id, role_code, first_name \n FROM Professionals\n JOIN Treatments ON Professionals.professional_id = Treatments.professional_id \n GROUP BY Professionals.professional_id \n HAVING COUNT(Treatments.treatment_id) >= 2;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Breeds(breed_code,breed_name,animal_type,genus)\n;# Charges(charge_id,charge_type,charge_amount,additional_serivice_fee,billing_account)\n;# Sizes(size_code,size_description)\n;# Treatment_Types(treatment_type_code,treatment_type_description,treatment_design,threapy_duration)\n;# Owners(owner_id,first_name,last_name,street,city,state,zip_code,email_address,home_phone,cell_number,title_description,site_name,first_season_profit,status_date,last_status)\n;# Dogs(dog_id,owner_id,abandoned_yn,breed_code,size_code,name,age,date_of_birth,gender,weight,date_arrived,date_adopted,date_departed,no_case_in_livestock,id_no,sex,top_10_dog_breed,seller,breed_specifications,color_code)\n;# Professionals(professional_id,role_code,first_name,street,city,state,zip_code,last_name,email_address,home_phone,cell_number,social_security_card,role_responsibility,official_mailbox,administration_of_substance_harmful_to_health,street_zipcode,authority,date_of_birth,manager_name,cell_server)\n;# Treatments(treatment_id,dog_id,professional_id,treatment_type_code,date_of_treatment,cost_of_treatment,description,seize_animal,type_of_damage_included,acute_illness_treatment,therapy_characteristics)\n.# \n ### Which professionals have done at least two treatments? List the professional's id, role, and first name. \n SELECT"
+    },
+    {
+        "db_id": "car_1",
+        "query": "SELECT count(*) FROM COUNTRIES;",
+        "question": "How many countries exist?",
+        "result": "COUNT(*) FROM countries;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# continents(ContId,Continent,status,region)\n;# countries(CountryId,CountryName,Continent,state_name,region_code,geographical_longitude)\n;# car_makers(Id,Maker,FullName,Country,equipment_type,last_name,street,sold_price)\n;# model_list(ModelId,Maker,Model,trader,model_year)\n;# car_names(MakeId,Model,Make,description,manufacturer,model_year)\n;# cars_data(Id,MPG,Cylinders,Edispl,Horsepower,Weight,Accelerate,Year,torque,average_paid,model_name,mileage,max_speed,change,buying_from_dealer_price,city_mpg)\n.# \n ### How many countries exist? \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT count(*) FROM Courses",
+        "question": "How many courses in total are listed?",
+        "result": "COUNT(*) FROM Courses;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### How many courses in total are listed? \n SELECT"
+    },
+    {
+        "db_id": "singer",
+        "query": "SELECT T1.Name ,  sum(T2.Sales) FROM singer AS T1 JOIN song AS T2 ON T1.Singer_ID  =  T2.Singer_ID GROUP BY T1.Name",
+        "question": "Show the names of singers and the total sales of their songs.",
+        "result": "singer.Name, SUM(song.Sales) AS total_sales \nFROM singer \nJOIN song ON singer.Singer_ID = song.Singer_ID \nGROUP BY singer.Name",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# singer(Singer_ID,Name,Birth_Year,Net_Worth_Millions,Citizenship,record_year,home_address,representative_work,album_title,best_sale_amount)\n;# song(Song_ID,Title,Singer_ID,Sales,Highest_Position,u_black_album,profits)\n.# \n ### Show the names of singers and the total sales of their songs. \n SELECT"
+    },
+    {
+        "db_id": "course_teach",
+        "query": "SELECT T2.Name ,  COUNT(*) FROM course_arrange AS T1 JOIN teacher AS T2 ON T1.Teacher_ID  =  T2.Teacher_ID GROUP BY T2.Name",
+        "question": "What are the names of the teachers and how many courses do they teach?",
+        "result": "teacher.Name, COUNT(course_arrange.Course_ID) \nFROM teacher \nINNER JOIN course_arrange ON teacher.Teacher_ID = course_arrange.Teacher_ID \nGROUP BY teacher.Teacher_ID",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# course(Course_ID,Staring_Date,Course,location,program)\n;# teacher(Teacher_ID,Name,Age,Hometown,school_year,email,join_year,school_location)\n;# course_arrange(Course_ID,Teacher_ID,Grade,education,school)\n.# \n ### What are the names of the teachers and how many courses do they teach? \n SELECT"
+    },
+    {
+        "db_id": "cre_Doc_Template_Mgt",
+        "query": "SELECT template_type_code FROM Templates GROUP BY template_type_code ORDER BY count(*) DESC LIMIT 1",
+        "question": "Return the type code of the template type that the most templates belong to.",
+        "result": "Templates.Template_Type_Code \nFROM Templates \nGROUP BY Templates.Template_Type_Code \nORDER BY COUNT(*) DESC \nLIMIT 1;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Ref_Template_Types(Template_Type_Code,Template_Type_Description,field_type,data_type)\n;# Templates(Template_ID,Version_Number,Template_Type_Code,Date_Effective_From,Date_Effective_To,Template_Details,spreadsheet,parameter_type,type_number_of_position)\n;# Documents(Document_ID,Template_ID,Document_Name,Document_Description,Other_Details,memorandum_type,file_type,database_name,document_title)\n;# Paragraphs(Paragraph_ID,Document_ID,Paragraph_Text,Other_Details,application_name,image_content,genre,title)\n.# \n ### Return the type code of the template type that the most templates belong to. \n SELECT"
+    },
+    {
+        "db_id": "singer",
+        "query": "SELECT DISTINCT T1.Name FROM singer AS T1 JOIN song AS T2 ON T1.Singer_ID  =  T2.Singer_ID WHERE T2.Sales  >  300000",
+        "question": "what are the different names of the singers that have sales more than 300000?",
+        "result": "Name FROM singer JOIN song ON singer.Singer_ID = song.Singer_ID WHERE Sales > 300000;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# singer(Singer_ID,Name,Birth_Year,Net_Worth_Millions,Citizenship,record_year,home_address,representative_work,album_title,best_sale_amount)\n;# song(Song_ID,Title,Singer_ID,Sales,Highest_Position,u_black_album,profits)\n.# \n ### what are the different names of the singers that have sales more than 300000? \n SELECT"
+    },
+    {
+        "db_id": "flight_2",
+        "query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRLINES AS T2 ON T1.Airline  =  T2.uid WHERE T2.Airline = \"JetBlue Airways\"",
+        "question": "Give the number of Jetblue Airways flights.",
+        "result": "COUNT(*) FROM flights WHERE Airline = \"Jetblue Airways\"",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# airlines(uid,Airline,Abbreviation,Country,southwest_airline,is_southwest_airline,full_name,carrier_group)\n;# airports(City,AirportCode,AirportName,Country,CountryAbbrev,terminal,terminal_name,city_sclae,country_population)\n;# flights(Airline,FlightNo,SourceAirport,DestAirport,flight_no,departure_time,source_port,date_of_flight)\n.# \n ### Give the number of Jetblue Airways flights. \n SELECT"
+    },
+    {
+        "db_id": "pets_1",
+        "query": "SELECT count(*) ,  T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid",
+        "question": "Find the number of pets for each student who has any pet and student id.",
+        "result": "COUNT(*) AS num_pets, StuID FROM Has_Pet GROUP BY StuID;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Student(StuID,LName,Fname,Age,Sex,Major,Advisor,city_code,description,enrollment_year,advisor_name,minimum_age,our_overall_rating,location)\n;# Has_Pet(StuID,PetID,year_at_school,dog_bed)\n;# Pets(PetID,PetType,pet_age,weight,animal,pet_owner,pet_birth_date,max_weight)\n.# \n ### Find the number of pets for each student who has any pet and student id. \n SELECT"
+    },
+    {
+        "db_id": "tvshow",
+        "query": "SELECT T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.written_by  =  'Todd Casey'",
+        "question": "What are the countries that have cartoons on TV that were written by Todd Casey?",
+        "result": "Country FROM TV_Channel \n JOIN Cartoon ON TV_Channel.channel_name = Cartoon.Channel \n WHERE Cartoon.Written_by = 'Todd Casey';",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# TV_Channel(id,series_name,Country,Language,Content,Pixel_aspect_ratio_PAR,Hight_definition_TV,Pay_per_view_PPV,Package_Option,channel_name,channel_type,digital,minimum_package,provider,broadcast_format,quality,television_service)\n;# TV_series(id,Episode,Air_Date,Rating,Share,18_49_Rating_Share,Viewers_m,Weekly_Rank,Channel,weekly_time_slot,release_region)\n;# Cartoon(id,Title,Directed_by,Written_by,Original_air_date,Production_code,Channel,original_voice,actor,network,result,number_of_page,format)\n.# \n ### What are the countries that have cartoons on TV that were written by Todd Casey? \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT semester_name FROM Semesters WHERE semester_id NOT IN( SELECT semester_id FROM Student_Enrolment )",
+        "question": "Which semesters do not have any student enrolled? List the semester name.",
+        "result": "Semesters.semester_name \nFROM Semesters \nLEFT JOIN Student_Enrolment \nON Semesters.semester_id = Student_Enrolment.semester_id \nWHERE Student_Enrolment.student_enrolment_id IS NULL;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### Which semesters do not have any student enrolled? List the semester name. \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_left ASC LIMIT 1",
+        "question": "What is the first, middle, and last name of the earliest school graduate?",
+        "result": "Students.first_name, Students.middle_name, Students.last_name \nFROM Students \nINNER JOIN Student_Enrolment ON Students.student_id = Student_Enrolment.student_id \nINNER JOIN Degree_Programs ON Student_Enrolment.degree_program_id = Degree_Programs.degree_program_id \nWHERE Degree_Programs.undergraduate_degree = 'Yes' \nORDER BY Students.date_left ASC \nLIMIT 1;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### What is the first, middle, and last name of the earliest school graduate? \n SELECT"
+    },
+    {
+        "db_id": "museum_visit",
+        "query": "SELECT avg(num_of_staff) FROM museum WHERE open_year  <  2009",
+        "question": "Find the average number of staff working for the museums that were open before 2009.",
+        "result": "AVG(Num_of_Staff) \nFROM museum \nWHERE Open_Year < 2009;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# museum(Museum_ID,Name,Num_of_Staff,Open_Year,exhibit_name,num_of_institution,years_opened)\n;# visitor(ID,Name,Level_of_membership,Age,ticket_sample,family_plus_membership,travel_date,ticket)\n;# visit(Museum_ID,visitor_ID,Num_of_Ticket,Total_spent,price_per_ticket)\n.# \n ### Find the average number of staff working for the museums that were open before 2009. \n SELECT"
+    },
+    {
+        "db_id": "flight_2",
+        "query": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.SourceAirport  =  \"AHD\"",
+        "question": "How many 'United Airlines' flights depart from Airport 'AHD'?",
+        "result": "COUNT(*) FROM flights \nWHERE Airline = 'United Airlines' AND SourceAirport = 'AHD'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# airlines(uid,Airline,Abbreviation,Country,southwest_airline,is_southwest_airline,full_name,carrier_group)\n;# airports(City,AirportCode,AirportName,Country,CountryAbbrev,terminal,terminal_name,city_sclae,country_population)\n;# flights(Airline,FlightNo,SourceAirport,DestAirport,flight_no,departure_time,source_port,date_of_flight)\n.# \n ### How many 'United Airlines' flights depart from Airport 'AHD'? \n SELECT"
+    },
+    {
+        "db_id": "car_1",
+        "query": "select min(weight) from cars_data where cylinders  =  8 and year  =  1974",
+        "question": "What is the smallest weight of the car produced with 8 cylinders on 1974 ?",
+        "result": "MIN(Weight) \nFROM cars_data \nWHERE Cylinders = 8 \nAND Year = 1974",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# continents(ContId,Continent,status,region)\n;# countries(CountryId,CountryName,Continent,state_name,region_code,geographical_longitude)\n;# car_makers(Id,Maker,FullName,Country,equipment_type,last_name,street,sold_price)\n;# model_list(ModelId,Maker,Model,trader,model_year)\n;# car_names(MakeId,Model,Make,description,manufacturer,model_year)\n;# cars_data(Id,MPG,Cylinders,Edispl,Horsepower,Weight,Accelerate,Year,torque,average_paid,model_name,mileage,max_speed,change,buying_from_dealer_price,city_mpg)\n.# \n ### What is the smallest weight of the car produced with 8 cylinders on 1974 ? \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT T1.last_name FROM Students AS T1 JOIN Addresses AS T2 ON T1.current_address_id  =  T2.address_id WHERE T2.state_province_county  =  'NorthCarolina' EXCEPT SELECT DISTINCT T3.last_name FROM Students AS T3 JOIN Student_Enrolment AS T4 ON T3.student_id  =  T4.student_id",
+        "question": "What are the last name of the students who live in North Carolina but have not registered in any degree programs?",
+        "result": "Students.last_name \nFROM Students \nJOIN Addresses ON Students.current_address_id = Addresses.address_id \nWHERE Addresses.state_province_county = 'North Carolina' \nAND Students.student_id NOT IN \n(SELECT student_id FROM Student_Enrolment)",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### What are the last name of the students who live in North Carolina but have not registered in any degree programs? \n SELECT"
+    },
+    {
+        "db_id": "flight_2",
+        "query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+        "question": "Return the number of flights departing from Aberdeen.",
+        "result": "COUNT(*) FROM flights WHERE SourceAirport = 'Aberdeen'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# airlines(uid,Airline,Abbreviation,Country,southwest_airline,is_southwest_airline,full_name,carrier_group)\n;# airports(City,AirportCode,AirportName,Country,CountryAbbrev,terminal,terminal_name,city_sclae,country_population)\n;# flights(Airline,FlightNo,SourceAirport,DestAirport,flight_no,departure_time,source_port,date_of_flight)\n.# \n ### Return the number of flights departing from Aberdeen. \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT Name ,  Population ,  LifeExpectancy FROM country WHERE Continent  =  \"Asia\" ORDER BY SurfaceArea DESC LIMIT 1",
+        "question": "What are the name, population, and life expectancy of the largest Asian country by land?",
+        "result": "Name, Population, LifeExpectancy \nFROM country \nWHERE Continent='Asia' \nORDER BY SurfaceArea DESC \nLIMIT 1",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### What are the name, population, and life expectancy of the largest Asian country by land? \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT department_description FROM Departments WHERE department_name LIKE '%computer%'",
+        "question": "What is the description of the department whose name has the substring the computer?",
+        "result": "Departments.department_description FROM Departments WHERE Departments.department_name LIKE '%computer%'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### What is the description of the department whose name has the substring the computer? \n SELECT"
+    },
+    {
+        "db_id": "network_1",
+        "query": "SELECT id FROM Highschooler EXCEPT SELECT student_id FROM Friend",
+        "question": "What are the ids of high school students who do not have friends?",
+        "result": "Highschooler.ID \nFROM Highschooler \nWHERE Highschooler.ID NOT IN \n(SELECT DISTINCT student_id FROM Friend UNION SELECT DISTINCT friend_id FROM Friend)",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Highschooler(ID,name,grade,email,status,scores)\n;# Friend(student_id,friend_id,private_school,hometown)\n;# Likes(student_id,liked_id,citizenship)\n.# \n ### What are the ids of high school students who do not have friends? \n SELECT"
+    },
+    {
+        "db_id": "cre_Doc_Template_Mgt",
+        "query": "SELECT T2.document_name FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id WHERE T1.template_type_code  =  \"BK\"",
+        "question": "What are the names of documents that use templates with the code BK?",
+        "result": "Documents.Document_Name \nFROM \nDocuments \nINNER JOIN Templates ON Documents.Template_ID = Templates.Template_ID \nWHERE Templates.Template_Type_Code = 'BK'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Ref_Template_Types(Template_Type_Code,Template_Type_Description,field_type,data_type)\n;# Templates(Template_ID,Version_Number,Template_Type_Code,Date_Effective_From,Date_Effective_To,Template_Details,spreadsheet,parameter_type,type_number_of_position)\n;# Documents(Document_ID,Template_ID,Document_Name,Document_Description,Other_Details,memorandum_type,file_type,database_name,document_title)\n;# Paragraphs(Paragraph_ID,Document_ID,Paragraph_Text,Other_Details,application_name,image_content,genre,title)\n.# \n ### What are the names of documents that use templates with the code BK? \n SELECT"
+    },
+    {
+        "db_id": "concert_singer",
+        "query": "SELECT country ,  count(*) FROM singer GROUP BY country",
+        "question": "Show all countries and the number of singers in each country.",
+        "result": "Country, COUNT(Singer_ID) \n FROM singer \n GROUP BY Country",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# stadium(Stadium_ID,Location,Name,Capacity,Highest,Lowest,Average,stadium_capacity,description,judge_name,total_attendance,sum)\n;# singer(Singer_ID,Name,Country,Song_Name,Song_release_year,Age,Is_male,genre,era,recording,author,music_event)\n;# concert(concert_ID,concert_Name,Theme,Stadium_ID,Year,venue,ticket_price,venue_type,concert_location,duration)\n;# singer_in_concert(concert_ID,Singer_ID,venue,artwork_id)\n.# \n ### Show all countries and the number of singers in each country. \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "select name from city where population between 160000 and 900000",
+        "question": "Return the names of cities that have a population between 160000 and 900000 .",
+        "result": "Name FROM city WHERE Population BETWEEN 160000 AND 900000;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### Return the names of cities that have a population between 160000 and 900000 . \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT Name ,  SurfaceArea FROM country ORDER BY SurfaceArea DESC LIMIT 5",
+        "question": "Return the names and surface areas of the 5 largest countries.",
+        "result": "Name, SurfaceArea\nFROM country\nORDER BY SurfaceArea DESC\nLIMIT 5;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### Return the names and surface areas of the 5 largest countries. \n SELECT"
+    },
+    {
+        "db_id": "poker_player",
+        "query": "SELECT avg(Earnings) FROM poker_player",
+        "question": "Return the average earnings across all poker players.",
+        "result": "AVG(Earnings) FROM poker_player",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# poker_player(Poker_Player_ID,People_ID,Final_Table_Made,Best_Finish,Money_Rank,Earnings,value,max_score,final_table_missed)\n;# people(People_ID,Nationality,Name,Birth_Date,Height,position)\n.# \n ### Return the average earnings across all poker players. \n SELECT"
+    },
+    {
+        "db_id": "cre_Doc_Template_Mgt",
+        "query": "SELECT count(*) FROM Templates WHERE template_type_code  =  \"CV\"",
+        "question": "Count the number of templates of the type CV.",
+        "result": "COUNT(*) FROM Templates WHERE Template_Type_Code='CV';",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Ref_Template_Types(Template_Type_Code,Template_Type_Description,field_type,data_type)\n;# Templates(Template_ID,Version_Number,Template_Type_Code,Date_Effective_From,Date_Effective_To,Template_Details,spreadsheet,parameter_type,type_number_of_position)\n;# Documents(Document_ID,Template_ID,Document_Name,Document_Description,Other_Details,memorandum_type,file_type,database_name,document_title)\n;# Paragraphs(Paragraph_ID,Document_ID,Paragraph_Text,Other_Details,application_name,image_content,genre,title)\n.# \n ### Count the number of templates of the type CV. \n SELECT"
+    },
+    {
+        "db_id": "wta_1",
+        "query": "SELECT first_name ,  last_name FROM players WHERE hand  =  'L' ORDER BY birth_date",
+        "question": "List the first and last name of all players who are left / L hand in the order of birth date.",
+        "result": "first_name, last_name \nFROM players \nWHERE hand = 'L' \nORDER BY birth_date ASC;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# players(player_id,first_name,last_name,hand,birth_date,country_code,away_player_name,lifespan,coach_code,legal_name,away_score,home_player_name)\n;# matches(best_of,draw_size,loser_age,loser_entry,loser_hand,loser_ht,loser_id,loser_ioc,loser_name,loser_rank,loser_rank_points,loser_seed,match_num,minutes,round,score,surface,tourney_date,tourney_id,tourney_level,tourney_name,winner_age,winner_entry,winner_hand,winner_ht,winner_id,winner_ioc,winner_name,winner_rank,winner_rank_points,winner_seed,year,loser_total_total_goal,seconds,total_wins,ticket_selling_time,coach_name,winning_margin,loser_history_rank,winner_total_goal,winner_history_rank,loser_birth_date,winner_birth_date)\n;# rankings(ranking_date,ranking,player_id,ranking_points,tours,tournament,grand_slam,championship,competition_time,ending_scores)\n.# \n ### List the first and last name of all players who are left / L hand in the order of birth date. \n SELECT"
+    },
+    {
+        "db_id": "poker_player",
+        "query": "SELECT max(Final_Table_Made) FROM poker_player WHERE Earnings  <  200000",
+        "question": "What is the maximum number of final tables made among poker players with earnings less than 200000?",
+        "result": "MAX(Final_Table_Made) FROM poker_player WHERE Earnings < 200000;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# poker_player(Poker_Player_ID,People_ID,Final_Table_Made,Best_Finish,Money_Rank,Earnings,value,max_score,final_table_missed)\n;# people(People_ID,Nationality,Name,Birth_Date,Height,position)\n.# \n ### What is the maximum number of final tables made among poker players with earnings less than 200000? \n SELECT"
+    },
+    {
+        "db_id": "cre_Doc_Template_Mgt",
+        "query": "select other_details from paragraphs where paragraph_text like 'korea'",
+        "question": "What are the details for the paragraph that includes the text 'Korea ' ?",
+        "result": "Paragraph_ID, Document_ID, Paragraph_Text, Other_Details, application_name, image_content, genre, title \n FROM Paragraphs \n WHERE Paragraph_Text LIKE '%Korea %'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Ref_Template_Types(Template_Type_Code,Template_Type_Description,field_type,data_type)\n;# Templates(Template_ID,Version_Number,Template_Type_Code,Date_Effective_From,Date_Effective_To,Template_Details,spreadsheet,parameter_type,type_number_of_position)\n;# Documents(Document_ID,Template_ID,Document_Name,Document_Description,Other_Details,memorandum_type,file_type,database_name,document_title)\n;# Paragraphs(Paragraph_ID,Document_ID,Paragraph_Text,Other_Details,application_name,image_content,genre,title)\n.# \n ### What are the details for the paragraph that includes the text 'Korea ' ? \n SELECT"
+    },
+    {
+        "db_id": "tvshow",
+        "query": "SELECT id FROM TV_Channel EXCEPT SELECT channel FROM cartoon WHERE directed_by  =  'Ben Jones'",
+        "question": "find the id of tv channels that do not play any cartoon directed by Ben Jones.",
+        "result": "TV_Channel.id\nFROM TV_Channel\nWHERE TV_Channel.id NOT IN (\n    SELECT Cartoon.Channel\n    FROM Cartoon\n    WHERE Cartoon.Directed_by = 'Ben Jones'\n)",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# TV_Channel(id,series_name,Country,Language,Content,Pixel_aspect_ratio_PAR,Hight_definition_TV,Pay_per_view_PPV,Package_Option,channel_name,channel_type,digital,minimum_package,provider,broadcast_format,quality,television_service)\n;# TV_series(id,Episode,Air_Date,Rating,Share,18_49_Rating_Share,Viewers_m,Weekly_Rank,Channel,weekly_time_slot,release_region)\n;# Cartoon(id,Title,Directed_by,Written_by,Original_air_date,Production_code,Channel,original_voice,actor,network,result,number_of_page,format)\n.# \n ### find the id of tv channels that do not play any cartoon directed by Ben Jones. \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT count(DISTINCT degree_summary_name) FROM Degree_Programs",
+        "question": "How many different degrees are offered?",
+        "result": "COUNT(DISTINCT degree_program_id) FROM Degree_Programs;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### How many different degrees are offered? \n SELECT"
+    },
+    {
+        "db_id": "cre_Doc_Template_Mgt",
+        "query": "SELECT count(*) FROM Paragraphs",
+        "question": "Count the number of paragraphs.",
+        "result": "COUNT(*) \nFROM Paragraphs",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Ref_Template_Types(Template_Type_Code,Template_Type_Description,field_type,data_type)\n;# Templates(Template_ID,Version_Number,Template_Type_Code,Date_Effective_From,Date_Effective_To,Template_Details,spreadsheet,parameter_type,type_number_of_position)\n;# Documents(Document_ID,Template_ID,Document_Name,Document_Description,Other_Details,memorandum_type,file_type,database_name,document_title)\n;# Paragraphs(Paragraph_ID,Document_ID,Paragraph_Text,Other_Details,application_name,image_content,genre,title)\n.# \n ### Count the number of paragraphs. \n SELECT"
+    },
+    {
+        "db_id": "dog_kennels",
+        "query": "SELECT DISTINCT T1.first_name ,  T3.treatment_type_description FROM professionals AS T1 JOIN Treatments AS T2 ON T1.professional_id  =  T2.professional_id JOIN Treatment_types AS T3 ON T2.treatment_type_code  =  T3.treatment_type_code",
+        "question": "What are each professional's first name and description of the treatment they have performed?",
+        "result": "Professionals.first_name, Treatment_Types.treatment_type_description\nFROM Professionals\nJOIN Treatments ON Professionals.professional_id = Treatments.professional_id\nJOIN Treatment_Types ON Treatments.treatment_type_code = Treatment_Types.treatment_type_code;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Breeds(breed_code,breed_name,animal_type,genus)\n;# Charges(charge_id,charge_type,charge_amount,additional_serivice_fee,billing_account)\n;# Sizes(size_code,size_description)\n;# Treatment_Types(treatment_type_code,treatment_type_description,treatment_design,threapy_duration)\n;# Owners(owner_id,first_name,last_name,street,city,state,zip_code,email_address,home_phone,cell_number,title_description,site_name,first_season_profit,status_date,last_status)\n;# Dogs(dog_id,owner_id,abandoned_yn,breed_code,size_code,name,age,date_of_birth,gender,weight,date_arrived,date_adopted,date_departed,no_case_in_livestock,id_no,sex,top_10_dog_breed,seller,breed_specifications,color_code)\n;# Professionals(professional_id,role_code,first_name,street,city,state,zip_code,last_name,email_address,home_phone,cell_number,social_security_card,role_responsibility,official_mailbox,administration_of_substance_harmful_to_health,street_zipcode,authority,date_of_birth,manager_name,cell_server)\n;# Treatments(treatment_id,dog_id,professional_id,treatment_type_code,date_of_treatment,cost_of_treatment,description,seize_animal,type_of_damage_included,acute_illness_treatment,therapy_characteristics)\n.# \n ### What are each professional's first name and description of the treatment they have performed? \n SELECT"
+    },
+    {
+        "db_id": "flight_2",
+        "query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline ORDER BY count(*) DESC LIMIT 1",
+        "question": "What airline serves the most flights?",
+        "result": "Airline, COUNT(*) AS num_flights \n FROM flights \n GROUP BY Airline \n ORDER BY num_flights DESC \n LIMIT 1;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# airlines(uid,Airline,Abbreviation,Country,southwest_airline,is_southwest_airline,full_name,carrier_group)\n;# airports(City,AirportCode,AirportName,Country,CountryAbbrev,terminal,terminal_name,city_sclae,country_population)\n;# flights(Airline,FlightNo,SourceAirport,DestAirport,flight_no,departure_time,source_port,date_of_flight)\n.# \n ### What airline serves the most flights? \n SELECT"
+    },
+    {
+        "db_id": "wta_1",
+        "query": "SELECT first_name ,  last_name FROM players WHERE hand  =  'L' ORDER BY birth_date",
+        "question": "What are the full names of all left handed players, in order of birth date?",
+        "result": "first_name || ' ' || last_name AS full_name \nFROM players \nWHERE hand = 'L' \nORDER BY birth_date ASC;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# players(player_id,first_name,last_name,hand,birth_date,country_code,away_player_name,lifespan,coach_code,legal_name,away_score,home_player_name)\n;# matches(best_of,draw_size,loser_age,loser_entry,loser_hand,loser_ht,loser_id,loser_ioc,loser_name,loser_rank,loser_rank_points,loser_seed,match_num,minutes,round,score,surface,tourney_date,tourney_id,tourney_level,tourney_name,winner_age,winner_entry,winner_hand,winner_ht,winner_id,winner_ioc,winner_name,winner_rank,winner_rank_points,winner_seed,year,loser_total_total_goal,seconds,total_wins,ticket_selling_time,coach_name,winning_margin,loser_history_rank,winner_total_goal,winner_history_rank,loser_birth_date,winner_birth_date)\n;# rankings(ranking_date,ranking,player_id,ranking_points,tours,tournament,grand_slam,championship,competition_time,ending_scores)\n.# \n ### What are the full names of all left handed players, in order of birth date? \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT T1.last_name FROM Students AS T1 JOIN Addresses AS T2 ON T1.current_address_id  =  T2.address_id WHERE T2.state_province_county  =  'NorthCarolina' EXCEPT SELECT DISTINCT T3.last_name FROM Students AS T3 JOIN Student_Enrolment AS T4 ON T3.student_id  =  T4.student_id",
+        "question": "Find the last name of the students who currently live in the state of North Carolina but have not registered in any degree program.",
+        "result": "Students.last_name \nFROM Students \nJOIN Addresses ON Students.current_address_id = Addresses.address_id \nWHERE Addresses.state_province_county = 'North Carolina' \nAND Students.student_id NOT IN (SELECT student_id FROM Student_Enrolment)",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### Find the last name of the students who currently live in the state of North Carolina but have not registered in any degree program. \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT count(*) FROM Departments AS T1 JOIN Degree_Programs AS T2 ON T1.department_id  =  T2.department_id WHERE T1.department_name  =  'engineer'",
+        "question": "How many degrees does the engineering department have?",
+        "result": "COUNT(*) \nFROM Degree_Programs \nWHERE department_id = (SELECT department_id FROM Departments WHERE department_name = 'Engineering')",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### How many degrees does the engineering department have? \n SELECT"
+    },
+    {
+        "db_id": "cre_Doc_Template_Mgt",
+        "query": "SELECT min(Version_Number) ,  template_type_code FROM Templates",
+        "question": "Return the lowest version number, along with its corresponding template type code.",
+        "result": "Templates.Template_Type_Code, MIN(Templates.Version_Number)\n FROM Templates\n GROUP BY Templates.Template_Type_Code;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Ref_Template_Types(Template_Type_Code,Template_Type_Description,field_type,data_type)\n;# Templates(Template_ID,Version_Number,Template_Type_Code,Date_Effective_From,Date_Effective_To,Template_Details,spreadsheet,parameter_type,type_number_of_position)\n;# Documents(Document_ID,Template_ID,Document_Name,Document_Description,Other_Details,memorandum_type,file_type,database_name,document_title)\n;# Paragraphs(Paragraph_ID,Document_ID,Paragraph_Text,Other_Details,application_name,image_content,genre,title)\n.# \n ### Return the lowest version number, along with its corresponding template type code. \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT  T1.course_name FROM Courses AS T1 JOIN Student_Enrolment_Courses AS T2 ON T1.course_id  =  T2.course_id GROUP BY T1.course_name ORDER BY count(*) DESC LIMIT 1",
+        "question": "What is the name of the course with the most students enrolled?",
+        "result": "Courses.course_name \nFROM Courses \nJOIN Student_Enrolment_Courses ON Courses.course_id = Student_Enrolment_Courses.course_id \nGROUP BY Courses.course_name \nORDER BY COUNT(Student_Enrolment_Courses.student_enrolment_id) DESC \nLIMIT 1;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### What is the name of the course with the most students enrolled? \n SELECT"
+    },
+    {
+        "db_id": "network_1",
+        "query": "SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id HAVING count(*)  >=  3",
+        "question": "Show the names of high schoolers who have at least 3 friends.",
+        "result": "Highschooler.name \nFROM Highschooler \nJOIN Friend ON Highschooler.ID = Friend.student_id \nGROUP BY Highschooler.ID \nHAVING COUNT(Friend.friend_id) >= 3;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Highschooler(ID,name,grade,email,status,scores)\n;# Friend(student_id,friend_id,private_school,hometown)\n;# Likes(student_id,liked_id,citizenship)\n.# \n ### Show the names of high schoolers who have at least 3 friends. \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT sum(Population) FROM country WHERE Name NOT IN (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\")",
+        "question": "How many people live in countries that do not speak English?",
+        "result": "SUM(Population) \nFROM country \nWHERE Code NOT IN (SELECT CountryCode FROM countrylanguage WHERE Language = 'English')",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### How many people live in countries that do not speak English? \n SELECT"
+    },
+    {
+        "db_id": "flight_2",
+        "query": "SELECT AirportName FROM AIRPORTS WHERE City = \"Aberdeen\"",
+        "question": "What are airport names at City 'Aberdeen'?",
+        "result": "AirportName \nFROM airports \nWHERE City = 'Aberdeen'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# airlines(uid,Airline,Abbreviation,Country,southwest_airline,is_southwest_airline,full_name,carrier_group)\n;# airports(City,AirportCode,AirportName,Country,CountryAbbrev,terminal,terminal_name,city_sclae,country_population)\n;# flights(Airline,FlightNo,SourceAirport,DestAirport,flight_no,departure_time,source_port,date_of_flight)\n.# \n ### What are airport names at City 'Aberdeen'? \n SELECT"
+    },
+    {
+        "db_id": "network_1",
+        "query": "SELECT name FROM Highschooler WHERE grade  =  10",
+        "question": "Show the names of all high schoolers in grade 10.",
+        "result": "name FROM Highschooler WHERE grade = 10;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Highschooler(ID,name,grade,email,status,scores)\n;# Friend(student_id,friend_id,private_school,hometown)\n;# Likes(student_id,liked_id,citizenship)\n.# \n ### Show the names of all high schoolers in grade 10. \n SELECT"
+    },
+    {
+        "db_id": "wta_1",
+        "query": "SELECT country_code FROM players GROUP BY country_code HAVING count(*)  >  50",
+        "question": "What are the codes of countries with more than 50 players?",
+        "result": "country_code\nFROM players\nGROUP BY country_code\nHAVING COUNT(player_id) > 50;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# players(player_id,first_name,last_name,hand,birth_date,country_code,away_player_name,lifespan,coach_code,legal_name,away_score,home_player_name)\n;# matches(best_of,draw_size,loser_age,loser_entry,loser_hand,loser_ht,loser_id,loser_ioc,loser_name,loser_rank,loser_rank_points,loser_seed,match_num,minutes,round,score,surface,tourney_date,tourney_id,tourney_level,tourney_name,winner_age,winner_entry,winner_hand,winner_ht,winner_id,winner_ioc,winner_name,winner_rank,winner_rank_points,winner_seed,year,loser_total_total_goal,seconds,total_wins,ticket_selling_time,coach_name,winning_margin,loser_history_rank,winner_total_goal,winner_history_rank,loser_birth_date,winner_birth_date)\n;# rankings(ranking_date,ranking,player_id,ranking_points,tours,tournament,grand_slam,championship,competition_time,ending_scores)\n.# \n ### What are the codes of countries with more than 50 players? \n SELECT"
+    },
+    {
+        "db_id": "tvshow",
+        "query": "select production_code ,  channel from cartoon order by original_air_date desc limit 1",
+        "question": "Find the production code and channel of the most recently aired cartoon .",
+        "result": "Cartoon.Production_code, Cartoon.Channel \n FROM Cartoon\n WHERE Cartoon.Original_air_date = (SELECT MAX(Cartoon.Original_air_date) FROM Cartoon)",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# TV_Channel(id,series_name,Country,Language,Content,Pixel_aspect_ratio_PAR,Hight_definition_TV,Pay_per_view_PPV,Package_Option,channel_name,channel_type,digital,minimum_package,provider,broadcast_format,quality,television_service)\n;# TV_series(id,Episode,Air_Date,Rating,Share,18_49_Rating_Share,Viewers_m,Weekly_Rank,Channel,weekly_time_slot,release_region)\n;# Cartoon(id,Title,Directed_by,Written_by,Original_air_date,Production_code,Channel,original_voice,actor,network,result,number_of_page,format)\n.# \n ### Find the production code and channel of the most recently aired cartoon . \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT Population ,  LifeExpectancy FROM country WHERE Name  =  \"Brazil\"",
+        "question": "What are the population and life expectancies in Brazil?",
+        "result": "Population, LifeExpectancy FROM country WHERE Name='Brazil';",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### What are the population and life expectancies in Brazil? \n SELECT"
+    },
+    {
+        "db_id": "pets_1",
+        "query": "SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith'",
+        "question": "Find the id of the pet owned by student whose last name is ‘Smith’.",
+        "result": "Pets.PetID\nFROM Student \nJOIN Has_Pet ON Student.StuID = Has_Pet.StuID \nJOIN Pets ON Has_Pet.PetID = Pets.PetID \nWHERE Student.LName = 'Smith'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Student(StuID,LName,Fname,Age,Sex,Major,Advisor,city_code,description,enrollment_year,advisor_name,minimum_age,our_overall_rating,location)\n;# Has_Pet(StuID,PetID,year_at_school,dog_bed)\n;# Pets(PetID,PetType,pet_age,weight,animal,pet_owner,pet_birth_date,max_weight)\n.# \n ### Find the id of the pet owned by student whose last name is ‘Smith’. \n SELECT"
+    },
+    {
+        "db_id": "singer",
+        "query": "SELECT Name FROM singer WHERE Birth_Year  =  1948 OR Birth_Year  =  1949",
+        "question": "Show the name of singers whose birth year is either 1948 or 1949?",
+        "result": "Name FROM singer WHERE Birth_Year = 1948 OR Birth_Year = 1949;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# singer(Singer_ID,Name,Birth_Year,Net_Worth_Millions,Citizenship,record_year,home_address,representative_work,album_title,best_sale_amount)\n;# song(Song_ID,Title,Singer_ID,Sales,Highest_Position,u_black_album,profits)\n.# \n ### Show the name of singers whose birth year is either 1948 or 1949? \n SELECT"
+    },
+    {
+        "db_id": "wta_1",
+        "query": "SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id ORDER BY T2.tours DESC LIMIT 1",
+        "question": "Find the first name and country code of the player who did the most number of tours.",
+        "result": "players.first_name, players.country_code \nFROM players \nINNER JOIN rankings ON players.player_id = rankings.player_id \nGROUP BY players.player_id \nORDER BY COUNT(rankings.tours) DESC \nLIMIT 1;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# players(player_id,first_name,last_name,hand,birth_date,country_code,away_player_name,lifespan,coach_code,legal_name,away_score,home_player_name)\n;# matches(best_of,draw_size,loser_age,loser_entry,loser_hand,loser_ht,loser_id,loser_ioc,loser_name,loser_rank,loser_rank_points,loser_seed,match_num,minutes,round,score,surface,tourney_date,tourney_id,tourney_level,tourney_name,winner_age,winner_entry,winner_hand,winner_ht,winner_id,winner_ioc,winner_name,winner_rank,winner_rank_points,winner_seed,year,loser_total_total_goal,seconds,total_wins,ticket_selling_time,coach_name,winning_margin,loser_history_rank,winner_total_goal,winner_history_rank,loser_birth_date,winner_birth_date)\n;# rankings(ranking_date,ranking,player_id,ranking_points,tours,tournament,grand_slam,championship,competition_time,ending_scores)\n.# \n ### Find the first name and country code of the player who did the most number of tours. \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT COUNT(T2.Language) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.Name  =  \"Aruba\"",
+        "question": "How many languages are spoken in Aruba?",
+        "result": "COUNT(*) \nFROM countrylanguage \nWHERE CountryCode = 'ABW'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### How many languages are spoken in Aruba? \n SELECT"
+    },
+    {
+        "db_id": "concert_singer",
+        "query": "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
+        "question": "Show location and name for all stadiums with a capacity between 5000 and 10000.",
+        "result": "Location, Name \nFROM stadium \nWHERE Capacity BETWEEN 5000 AND 10000;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# stadium(Stadium_ID,Location,Name,Capacity,Highest,Lowest,Average,stadium_capacity,description,judge_name,total_attendance,sum)\n;# singer(Singer_ID,Name,Country,Song_Name,Song_release_year,Age,Is_male,genre,era,recording,author,music_event)\n;# concert(concert_ID,concert_Name,Theme,Stadium_ID,Year,venue,ticket_price,venue_type,concert_location,duration)\n;# singer_in_concert(concert_ID,Singer_ID,venue,artwork_id)\n.# \n ### Show location and name for all stadiums with a capacity between 5000 and 10000. \n SELECT"
+    },
+    {
+        "db_id": "concert_singer",
+        "query": "select max(capacity), average from stadium",
+        "question": "What is the maximum capacity and the average of all stadiums ?",
+        "result": "MAX(Capacity) AS max_capacity, AVG(Capacity) AS avg_capacity FROM stadium;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# stadium(Stadium_ID,Location,Name,Capacity,Highest,Lowest,Average,stadium_capacity,description,judge_name,total_attendance,sum)\n;# singer(Singer_ID,Name,Country,Song_Name,Song_release_year,Age,Is_male,genre,era,recording,author,music_event)\n;# concert(concert_ID,concert_Name,Theme,Stadium_ID,Year,venue,ticket_price,venue_type,concert_location,duration)\n;# singer_in_concert(concert_ID,Singer_ID,venue,artwork_id)\n.# \n ### What is the maximum capacity and the average of all stadiums ? \n SELECT"
+    },
+    {
+        "db_id": "orchestra",
+        "query": "SELECT Name FROM conductor ORDER BY Year_of_Work DESC",
+        "question": "What are the names of conductors, sorted descending by the number of years they have worked?",
+        "result": "Name FROM conductor ORDER BY Year_of_Work DESC",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# conductor(Conductor_ID,Name,Age,Nationality,Year_of_Work,requirement_to_pas_routed_order_id,office_name,start_year,location,last_name)\n;# orchestra(Orchestra_ID,Orchestra,Conductor_ID,Record_Company,Year_of_Founded,Major_Record_Format,chorus,date_of_recording,company_CEO,opera_house,album_sales)\n;# performance(Performance_ID,Orchestra_ID,Type,Date,Official_ratings_(millions),Weekly_rank,Share,performance_location,record_company)\n;# show(Show_ID,Performance_ID,If_first_show,Result,Attendance,concert_type,first_air_date,ending_scence,audience_rating)\n.# \n ### What are the names of conductors, sorted descending by the number of years they have worked? \n SELECT"
+    },
+    {
+        "db_id": "network_1",
+        "query": "SELECT grade FROM Highschooler WHERE name  =  \"Kyle\"",
+        "question": "What grade is Kyle in?",
+        "result": "grade \nFROM Highschooler \nWHERE name = 'Kyle'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Highschooler(ID,name,grade,email,status,scores)\n;# Friend(student_id,friend_id,private_school,hometown)\n;# Likes(student_id,liked_id,citizenship)\n.# \n ### What grade is Kyle in? \n SELECT"
+    },
+    {
+        "db_id": "dog_kennels",
+        "query": "SELECT DISTINCT T1.date_arrived ,  T1.date_departed FROM Dogs AS T1 JOIN Treatments AS T2 ON T1.dog_id  =  T2.dog_id",
+        "question": "Find the arriving date and the departing date of the dogs that received a treatment.",
+        "result": "Dogs.date_arrived, Dogs.date_departed\nFROM Dogs\nINNER JOIN Treatments ON Dogs.dog_id = Treatments.dog_id",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Breeds(breed_code,breed_name,animal_type,genus)\n;# Charges(charge_id,charge_type,charge_amount,additional_serivice_fee,billing_account)\n;# Sizes(size_code,size_description)\n;# Treatment_Types(treatment_type_code,treatment_type_description,treatment_design,threapy_duration)\n;# Owners(owner_id,first_name,last_name,street,city,state,zip_code,email_address,home_phone,cell_number,title_description,site_name,first_season_profit,status_date,last_status)\n;# Dogs(dog_id,owner_id,abandoned_yn,breed_code,size_code,name,age,date_of_birth,gender,weight,date_arrived,date_adopted,date_departed,no_case_in_livestock,id_no,sex,top_10_dog_breed,seller,breed_specifications,color_code)\n;# Professionals(professional_id,role_code,first_name,street,city,state,zip_code,last_name,email_address,home_phone,cell_number,social_security_card,role_responsibility,official_mailbox,administration_of_substance_harmful_to_health,street_zipcode,authority,date_of_birth,manager_name,cell_server)\n;# Treatments(treatment_id,dog_id,professional_id,treatment_type_code,date_of_treatment,cost_of_treatment,description,seize_animal,type_of_damage_included,acute_illness_treatment,therapy_characteristics)\n.# \n ### Find the arriving date and the departing date of the dogs that received a treatment. \n SELECT"
+    },
+    {
+        "db_id": "wta_1",
+        "query": "SELECT first_name ,  birth_date FROM players WHERE country_code  =  'USA'",
+        "question": "List the first name and birth date of all players from the country with code USA.",
+        "result": "players.first_name, players.birth_date \n FROM players \n WHERE players.country_code = 'USA';",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# players(player_id,first_name,last_name,hand,birth_date,country_code,away_player_name,lifespan,coach_code,legal_name,away_score,home_player_name)\n;# matches(best_of,draw_size,loser_age,loser_entry,loser_hand,loser_ht,loser_id,loser_ioc,loser_name,loser_rank,loser_rank_points,loser_seed,match_num,minutes,round,score,surface,tourney_date,tourney_id,tourney_level,tourney_name,winner_age,winner_entry,winner_hand,winner_ht,winner_id,winner_ioc,winner_name,winner_rank,winner_rank_points,winner_seed,year,loser_total_total_goal,seconds,total_wins,ticket_selling_time,coach_name,winning_margin,loser_history_rank,winner_total_goal,winner_history_rank,loser_birth_date,winner_birth_date)\n;# rankings(ranking_date,ranking,player_id,ranking_points,tours,tournament,grand_slam,championship,competition_time,ending_scores)\n.# \n ### List the first name and birth date of all players from the country with code USA. \n SELECT"
+    },
+    {
+        "db_id": "dog_kennels",
+        "query": "SELECT T1.name ,  T2.date_of_treatment FROM Dogs AS T1 JOIN Treatments AS T2 ON T1.dog_id  =  T2.dog_id WHERE T1.breed_code  =  ( SELECT breed_code FROM Dogs GROUP BY breed_code ORDER BY count(*) ASC LIMIT 1 )",
+        "question": "Which dogs are of the rarest breed? Show their names and treatment dates.",
+        "result": "Dogs.name, Treatments.date_of_treatment \n FROM Dogs \n INNER JOIN Breeds ON Dogs.breed_code = Breeds.breed_code \n INNER JOIN Treatments ON Dogs.dog_id = Treatments.dog_id \n WHERE Breeds.genus = 'rare'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Breeds(breed_code,breed_name,animal_type,genus)\n;# Charges(charge_id,charge_type,charge_amount,additional_serivice_fee,billing_account)\n;# Sizes(size_code,size_description)\n;# Treatment_Types(treatment_type_code,treatment_type_description,treatment_design,threapy_duration)\n;# Owners(owner_id,first_name,last_name,street,city,state,zip_code,email_address,home_phone,cell_number,title_description,site_name,first_season_profit,status_date,last_status)\n;# Dogs(dog_id,owner_id,abandoned_yn,breed_code,size_code,name,age,date_of_birth,gender,weight,date_arrived,date_adopted,date_departed,no_case_in_livestock,id_no,sex,top_10_dog_breed,seller,breed_specifications,color_code)\n;# Professionals(professional_id,role_code,first_name,street,city,state,zip_code,last_name,email_address,home_phone,cell_number,social_security_card,role_responsibility,official_mailbox,administration_of_substance_harmful_to_health,street_zipcode,authority,date_of_birth,manager_name,cell_server)\n;# Treatments(treatment_id,dog_id,professional_id,treatment_type_code,date_of_treatment,cost_of_treatment,description,seize_animal,type_of_damage_included,acute_illness_treatment,therapy_characteristics)\n.# \n ### Which dogs are of the rarest breed? Show their names and treatment dates. \n SELECT"
+    },
+    {
+        "db_id": "orchestra",
+        "query": "SELECT Record_Company FROM orchestra ORDER BY Year_of_Founded DESC",
+        "question": "Return the record companies of orchestras, sorted descending by the years in which they were founded.",
+        "result": "record_company FROM orchestra ORDER BY Year_of_Founded DESC",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# conductor(Conductor_ID,Name,Age,Nationality,Year_of_Work,requirement_to_pas_routed_order_id,office_name,start_year,location,last_name)\n;# orchestra(Orchestra_ID,Orchestra,Conductor_ID,Record_Company,Year_of_Founded,Major_Record_Format,chorus,date_of_recording,company_CEO,opera_house,album_sales)\n;# performance(Performance_ID,Orchestra_ID,Type,Date,Official_ratings_(millions),Weekly_rank,Share,performance_location,record_company)\n;# show(Show_ID,Performance_ID,If_first_show,Result,Attendance,concert_type,first_air_date,ending_scence,audience_rating)\n.# \n ### Return the record companies of orchestras, sorted descending by the years in which they were founded. \n SELECT"
+    },
+    {
+        "db_id": "flight_2",
+        "query": "SELECT FlightNo FROM FLIGHTS WHERE SourceAirport  =  \"APG\"",
+        "question": "What are flight numbers of flights departing from Airport \"APG\"?",
+        "result": "flight_no\nFROM flights\nWHERE SourceAirport = 'APG';",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# airlines(uid,Airline,Abbreviation,Country,southwest_airline,is_southwest_airline,full_name,carrier_group)\n;# airports(City,AirportCode,AirportName,Country,CountryAbbrev,terminal,terminal_name,city_sclae,country_population)\n;# flights(Airline,FlightNo,SourceAirport,DestAirport,flight_no,departure_time,source_port,date_of_flight)\n.# \n ### What are flight numbers of flights departing from Airport \"APG\"? \n SELECT"
+    },
+    {
+        "db_id": "network_1",
+        "query": "SELECT name ,  grade FROM Highschooler",
+        "question": "Show the names and grades of each high schooler.",
+        "result": "name, grade FROM Highschooler;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Highschooler(ID,name,grade,email,status,scores)\n;# Friend(student_id,friend_id,private_school,hometown)\n;# Likes(student_id,liked_id,citizenship)\n.# \n ### Show the names and grades of each high schooler. \n SELECT"
+    },
+    {
+        "db_id": "voter_1",
+        "query": "SELECT vote_id ,  phone_number ,  state FROM votes",
+        "question": "List the vote ids, phone numbers and states of all votes.",
+        "result": "vote_id, phone_number, state\nFROM VOTES",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# AREA_CODE_STATE(area_code,state,voter_code,status)\n;# CONTESTANTS(contestant_number,contestant_name,total_voting,contestant_party)\n;# VOTES(vote_id,phone_number,state,contestant_number,created,township,registered_voter_number,number_of_in_person_voting,result_2007)\n.# \n ### List the vote ids, phone numbers and states of all votes. \n SELECT"
+    },
+    {
+        "db_id": "car_1",
+        "query": "select count(*) from countries as t1 join car_makers as t2 on t1.countryid  =  t2.country group by t1.countryid having count(*)  >  2",
+        "question": "What is the number of countries with more than 2 car makers ?",
+        "result": "COUNT(DISTINCT countries.CountryId) \nFROM countries \nINNER JOIN car_makers ON countries.CountryName = car_makers.Country \nGROUP BY countries.CountryId \nHAVING COUNT(DISTINCT car_makers.Id) > 2;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# continents(ContId,Continent,status,region)\n;# countries(CountryId,CountryName,Continent,state_name,region_code,geographical_longitude)\n;# car_makers(Id,Maker,FullName,Country,equipment_type,last_name,street,sold_price)\n;# model_list(ModelId,Maker,Model,trader,model_year)\n;# car_names(MakeId,Model,Make,description,manufacturer,model_year)\n;# cars_data(Id,MPG,Cylinders,Edispl,Horsepower,Weight,Accelerate,Year,torque,average_paid,model_name,mileage,max_speed,change,buying_from_dealer_price,city_mpg)\n.# \n ### What is the number of countries with more than 2 car makers ? \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_left ASC LIMIT 1",
+        "question": "Who is the earliest graduate of the school? List the first name, middle name and last name.",
+        "result": "Students.first_name, Students.middle_name, Students.last_name \nFROM Students \nINNER JOIN Student_Enrolment ON Students.student_id = Student_Enrolment.student_id \nWHERE Student_Enrolment.degree_program_id IS NOT NULL \nORDER BY Student_Enrolment.application ASC \nLIMIT 1;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### Who is the earliest graduate of the school? List the first name, middle name and last name. \n SELECT"
+    },
+    {
+        "db_id": "course_teach",
+        "query": "select name from teacher where hometown != \"little lever urban district\"",
+        "question": "What are the names of the teachers whose hometown is not `` Little Lever Urban District '' ?",
+        "result": "Name FROM teacher WHERE Hometown <> 'Little Lever Urban District';",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# course(Course_ID,Staring_Date,Course,location,program)\n;# teacher(Teacher_ID,Name,Age,Hometown,school_year,email,join_year,school_location)\n;# course_arrange(Course_ID,Teacher_ID,Grade,education,school)\n.# \n ### What are the names of the teachers whose hometown is not `` Little Lever Urban District '' ? \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT avg(GNP) ,  sum(population) FROM country WHERE GovernmentForm  =  \"US Territory\"",
+        "question": "What is the average GNP and total population in all nations whose government is US territory?",
+        "result": "AVG(GNP), SUM(Population) FROM country WHERE government = 'US territory'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### What is the average GNP and total population in all nations whose government is US territory? \n SELECT"
+    },
+    {
+        "db_id": "world_1",
+        "query": "SELECT DISTINCT T1.Region FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" OR T2.Language  =  \"Dutch\"",
+        "question": "What are the regions that use English or Dutch?",
+        "result": "country.Region\nFROM countrylanguage\nINNER JOIN country ON country.Code = countrylanguage.CountryCode\nWHERE countrylanguage.Language IN ('English', 'Dutch')",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# city(ID,Name,CountryCode,District,Population,government,goverment_code,core_city_population,municipalities)\n;# sqlite_sequence(name,seq)\n;# country(Code,Name,Continent,Region,SurfaceArea,IndepYear,Population,LifeExpectancy,GNP,GNPOld,LocalName,GovernmentForm,HeadOfState,Capital,Code2,zipcode,longitude,home_address,abbreviation,main_language,density,geographical_area,captial_city,united_kingdom,year_of_foundation,total_oil_consumption)\n;# countrylanguage(CountryCode,Language,IsOfficial,Percentage,zipcode,language_family,current_speaker,number_of_households)\n.# \n ### What are the regions that use English or Dutch? \n SELECT"
+    },
+    {
+        "db_id": "course_teach",
+        "query": "select name from teacher where hometown != \"little lever urban district\"",
+        "question": "List the name of teachers whose hometown is not `` Little Lever Urban District '' .",
+        "result": "teacher.Name \nFROM teacher \nWHERE teacher.Hometown <> 'Little Lever Urban District'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# course(Course_ID,Staring_Date,Course,location,program)\n;# teacher(Teacher_ID,Name,Age,Hometown,school_year,email,join_year,school_location)\n;# course_arrange(Course_ID,Teacher_ID,Grade,education,school)\n.# \n ### List the name of teachers whose hometown is not `` Little Lever Urban District '' . \n SELECT"
+    },
+    {
+        "db_id": "car_1",
+        "query": "SELECT T1.Accelerate FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Make  =  'amc hornet sportabout (sw)';",
+        "question": "How much does the car accelerate that makes amc hornet sportabout (sw)?",
+        "result": "Accelerate \nFROM cars_data \nWHERE model_name = 'amc hornet sportabout (sw)'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# continents(ContId,Continent,status,region)\n;# countries(CountryId,CountryName,Continent,state_name,region_code,geographical_longitude)\n;# car_makers(Id,Maker,FullName,Country,equipment_type,last_name,street,sold_price)\n;# model_list(ModelId,Maker,Model,trader,model_year)\n;# car_names(MakeId,Model,Make,description,manufacturer,model_year)\n;# cars_data(Id,MPG,Cylinders,Edispl,Horsepower,Weight,Accelerate,Year,torque,average_paid,model_name,mileage,max_speed,change,buying_from_dealer_price,city_mpg)\n.# \n ### How much does the car accelerate that makes amc hornet sportabout (sw)? \n SELECT"
+    },
+    {
+        "db_id": "dog_kennels",
+        "query": "SELECT email_address FROM Professionals WHERE state  =  'Hawaii' OR state  =  'Wisconsin'",
+        "question": "List the emails of the professionals who live in the state of Hawaii or the state of Wisconsin.",
+        "result": "email_address \nFROM Professionals \nWHERE state = 'Hawaii' OR state = 'Wisconsin';",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Breeds(breed_code,breed_name,animal_type,genus)\n;# Charges(charge_id,charge_type,charge_amount,additional_serivice_fee,billing_account)\n;# Sizes(size_code,size_description)\n;# Treatment_Types(treatment_type_code,treatment_type_description,treatment_design,threapy_duration)\n;# Owners(owner_id,first_name,last_name,street,city,state,zip_code,email_address,home_phone,cell_number,title_description,site_name,first_season_profit,status_date,last_status)\n;# Dogs(dog_id,owner_id,abandoned_yn,breed_code,size_code,name,age,date_of_birth,gender,weight,date_arrived,date_adopted,date_departed,no_case_in_livestock,id_no,sex,top_10_dog_breed,seller,breed_specifications,color_code)\n;# Professionals(professional_id,role_code,first_name,street,city,state,zip_code,last_name,email_address,home_phone,cell_number,social_security_card,role_responsibility,official_mailbox,administration_of_substance_harmful_to_health,street_zipcode,authority,date_of_birth,manager_name,cell_server)\n;# Treatments(treatment_id,dog_id,professional_id,treatment_type_code,date_of_treatment,cost_of_treatment,description,seize_animal,type_of_damage_included,acute_illness_treatment,therapy_characteristics)\n.# \n ### List the emails of the professionals who live in the state of Hawaii or the state of Wisconsin. \n SELECT"
+    },
+    {
+        "db_id": "car_1",
+        "query": "SELECT count(*) FROM COUNTRIES;",
+        "question": "How many countries are listed?",
+        "result": "COUNT(*) FROM countries;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# continents(ContId,Continent,status,region)\n;# countries(CountryId,CountryName,Continent,state_name,region_code,geographical_longitude)\n;# car_makers(Id,Maker,FullName,Country,equipment_type,last_name,street,sold_price)\n;# model_list(ModelId,Maker,Model,trader,model_year)\n;# car_names(MakeId,Model,Make,description,manufacturer,model_year)\n;# cars_data(Id,MPG,Cylinders,Edispl,Horsepower,Weight,Accelerate,Year,torque,average_paid,model_name,mileage,max_speed,change,buying_from_dealer_price,city_mpg)\n.# \n ### How many countries are listed? \n SELECT"
+    },
+    {
+        "db_id": "pets_1",
+        "query": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'",
+        "question": "Find the last name of the student who has a cat that is age 3.",
+        "result": "Student.LName \nFROM \nStudent \nJOIN Has_Pet ON Student.StuID = Has_Pet.StuID \nJOIN Pets ON Has_Pet.PetID = Pets.PetID \nWHERE \nPets.PetType = 'cat' AND Pets.pet_age = 3;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Student(StuID,LName,Fname,Age,Sex,Major,Advisor,city_code,description,enrollment_year,advisor_name,minimum_age,our_overall_rating,location)\n;# Has_Pet(StuID,PetID,year_at_school,dog_bed)\n;# Pets(PetID,PetType,pet_age,weight,animal,pet_owner,pet_birth_date,max_weight)\n.# \n ### Find the last name of the student who has a cat that is age 3. \n SELECT"
+    },
+    {
+        "db_id": "student_transcripts_tracking",
+        "query": "SELECT other_student_details FROM Students ORDER BY other_student_details DESC",
+        "question": "List all the student details in reversed lexicographical order.",
+        "result": "student_id, current_address_id, permanent_address_id, first_name, middle_name, last_name, cell_mobile_number, email_address, ssn, date_first_registered, date_left, other_student_details, college_graduate, description, geographic_origin, class_of, apply_link, citizenship, bachelor_of_social_work, mobile_type\nFROM Students\nORDER BY last_name DESC",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Addresses(address_id,line_1,line_2,line_3,city,zip_postcode,state_province_county,country,other_address_details,email,status,institution,department,post_office,service_1,service_2)\n;# Courses(course_id,course_name,course_description,other_details,purchase_paper_course,course_instructor_name,course_department)\n;# Departments(department_id,department_name,department_description,other_details,department_head,department_head_name)\n;# Degree_Programs(degree_program_id,department_id,degree_summary_name,degree_summary_description,other_details,undergraduate_degree,graduate_degree,state_ranking)\n;# Sections(section_id,course_id,section_name,section_description,other_details,category,definition,field_name)\n;# Semesters(semester_id,semester_name,semester_description,other_details,university_id,university_name)\n;# Students(student_id,current_address_id,permanent_address_id,first_name,middle_name,last_name,cell_mobile_number,email_address,ssn,date_first_registered,date_left,other_student_details,college_graduate,description,geographic_origin,class_of,apply_link,citizenship,bachelor_of_social_work,mobile_type)\n;# Student_Enrolment(student_enrolment_id,degree_program_id,semester_id,student_id,other_details,some_college,application,enrollment)\n;# Student_Enrolment_Courses(student_course_id,course_id,student_enrolment_id,length)\n;# Transcripts(transcript_id,transcript_date,other_details,translation_id,original_source)\n;# Transcript_Contents(student_course_id,transcript_id,additional_information,class)\n.# \n ### List all the student details in reversed lexicographical order. \n SELECT"
+    },
+    {
+        "db_id": "concert_singer",
+        "query": "SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'",
+        "question": "what is the name and nation of the singer who have a song having 'Hey' in its name?",
+        "result": "singer.Name, singer.Country \n FROM singer \n WHERE singer.Song_Name LIKE '%Hey%'",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# stadium(Stadium_ID,Location,Name,Capacity,Highest,Lowest,Average,stadium_capacity,description,judge_name,total_attendance,sum)\n;# singer(Singer_ID,Name,Country,Song_Name,Song_release_year,Age,Is_male,genre,era,recording,author,music_event)\n;# concert(concert_ID,concert_Name,Theme,Stadium_ID,Year,venue,ticket_price,venue_type,concert_location,duration)\n;# singer_in_concert(concert_ID,Singer_ID,venue,artwork_id)\n.# \n ### what is the name and nation of the singer who have a song having 'Hey' in its name? \n SELECT"
+    },
+    {
+        "db_id": "pets_1",
+        "query": "SELECT max(weight) ,  petType FROM pets GROUP BY petType",
+        "question": "List the maximum weight and type for each type of pet.",
+        "result": "Pets.PetType, MAX(Pets.weight) FROM Pets GROUP BY Pets.PetType;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# Student(StuID,LName,Fname,Age,Sex,Major,Advisor,city_code,description,enrollment_year,advisor_name,minimum_age,our_overall_rating,location)\n;# Has_Pet(StuID,PetID,year_at_school,dog_bed)\n;# Pets(PetID,PetType,pet_age,weight,animal,pet_owner,pet_birth_date,max_weight)\n.# \n ### List the maximum weight and type for each type of pet. \n SELECT"
+    },
+    {
+        "db_id": "employee_hire_evaluation",
+        "query": "SELECT count(*) ,  LOCATION FROM shop GROUP BY LOCATION",
+        "question": "How many shops are there in each location?",
+        "result": "Location, COUNT(*) AS Num_of_Shops FROM shop GROUP BY Location;",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# employee(Employee_ID,Name,Age,City,education_level,agency)\n;# shop(Shop_ID,Name,Location,District,Number_products,Manager_name,job_title,customer_address,continent,type_of_retail_industry)\n;# hiring(Shop_ID,Employee_ID,Start_from,Is_full_time,occupation,employee_skill,end_by,available_time)\n;# evaluation(Employee_ID,Year_awarded,Bonus,skill)\n.# \n ### How many shops are there in each location? \n SELECT"
+    },
+    {
+        "db_id": "poker_player",
+        "query": "SELECT Nationality ,  COUNT(*) FROM people GROUP BY Nationality",
+        "question": "What are different nationalities of people and the corresponding number of people from each nation?",
+        "result": "people.Nationality, COUNT(people.People_ID) AS num_people\n FROM people\n GROUP BY people.Nationality",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# poker_player(Poker_Player_ID,People_ID,Final_Table_Made,Best_Finish,Money_Rank,Earnings,value,max_score,final_table_missed)\n;# people(People_ID,Nationality,Name,Birth_Date,Height,position)\n.# \n ### What are different nationalities of people and the corresponding number of people from each nation? \n SELECT"
+    },
+    {
+        "db_id": "orchestra",
+        "query": "SELECT avg(Attendance) FROM SHOW",
+        "question": "Return the average attendance across all shows.",
+        "result": "AVG(Attendance) FROM show",
+        "prompt": "### Complete sqlite SQL query only and with no explanation \n ### Sqlite SQL tables, with their properties: \n# \n# conductor(Conductor_ID,Name,Age,Nationality,Year_of_Work,requirement_to_pas_routed_order_id,office_name,start_year,location,last_name)\n;# orchestra(Orchestra_ID,Orchestra,Conductor_ID,Record_Company,Year_of_Founded,Major_Record_Format,chorus,date_of_recording,company_CEO,opera_house,album_sales)\n;# performance(Performance_ID,Orchestra_ID,Type,Date,Official_ratings_(millions),Weekly_rank,Share,performance_location,record_company)\n;# show(Show_ID,Performance_ID,If_first_show,Result,Attendance,concert_type,first_air_date,ending_scence,audience_rating)\n.# \n ### Return the average attendance across all shows. \n SELECT"
+    }
+]
