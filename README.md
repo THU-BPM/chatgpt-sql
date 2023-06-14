@@ -5,7 +5,7 @@ The prediction results of ChatGPT on various datasets of Text-to-SQL.
 For the specific evaluation methods and results, please refer to this paper "A comprehensive evaluation of ChatGPT's zero-shot Text-to-SQL capability" (https://arxiv.org/pdf/2303.13547.pdf). 
 
 ## Download dataset
-You can find the dataset in the following link: 
+You can find the datasets in the following links: 
 * Spider dataset: https://drive.google.com/uc?export=download&id=1TqleXec_OykOYFREKKtschzY29dUcVAQ
 * Spider-SYN dataset: https://github.com/ygan/Spider-Syn
 * Spider-DK dataset: https://github.com/ygan/Spider-DK
